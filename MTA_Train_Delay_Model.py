@@ -1,4 +1,4 @@
-from sklearn.preprocessing 	 import MinMaxScaler
+from sklearn.preprocessing   import MinMaxScaler
 from tensorflow.keras.utils  import to_categorical
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input
@@ -7,16 +7,16 @@ from tensorflow.keras.layers import Dense
 from tensorflow.keras.models import model_from_json
 from collections import Iterable
 from random 	 import randint
-from numpy 		 import array
-from numpy 		 import argmax
-from numpy 		 import array_equal
+from numpy 	 import array
+from numpy 	 import argmax
+from numpy 	 import array_equal
 import os
 import pandas as pd
 
 
 n_features 	= 4550 + 1 	#we set this value to b greater than any value that would come up
 n_steps_in 	= 2 		#sequence of values that we are predicting on
-n_steps_out = 1 		#how many values out are we predicting 
+n_steps_out 	= 1 		#how many values out are we predicting 
 data_count 	= 2114 - n_steps_in
 scaler 		= MinMaxScaler(feature_range=(0,n_features - 1)) #optional: If we want to scale down are values we would use this
 
@@ -40,7 +40,7 @@ def get_dataset(n_in, n_out, cardinality, n_samples):
 	
 	filename 		= 'mta_data.csv'
 	raw_data		= pd.read_csv(filename)
-	station_filter 	= raw_data['STATION']=='34 ST-HERALD SQ'
+	station_filter 		= raw_data['STATION']=='34 ST-HERALD SQ'
 	raw_data 		= raw_data[station_filter]['ENTRY_DELTA'].dropna().astype(int)
 	X1, X2, y 		= list(), list(), list()
 
@@ -106,7 +106,6 @@ def define_models(n_input, n_output, n_units):
 def predict_sequence(infenc, infdec, source, n_steps, cardinality):
 	# encode
 	state = infenc.predict(source)
-	print(one_hot_decode(state))
 	# start of sequence input
 	target_seq = array([0.0 for _ in range(cardinality)]).reshape(1, 1, cardinality)
 	# collect predictions
@@ -149,7 +148,7 @@ sample 	= list()
 #Prepare the numbers to be predicted by converting them 
 for i in numbers:
 	test_values = array([i]).reshape(-1,1)
-	categorize 	= to_categorical(test_values,num_classes=n_features)
+	categorize  = to_categorical(test_values,num_classes=n_features)
 	sample.append(categorize)
 
 sample = array(sample)
@@ -158,12 +157,12 @@ target = predict_sequence(infenc, infdec,X1[600].reshape(1,2,4551), n_steps_out,
 print('X=%s, yhat=%s' % (one_hot_decode(sample), one_hot_decode(target)))
 
 # If we want to get all the test results of our data 
-#for i in range(1,len(X1)):
+for i in range(1,len(X1)):
 
 	#X1, X2, y = get_dataset(n_steps_in, n_steps_out, n_features, i)
 
-#	target = predict_sequence(infenc, infdec, X1[i].reshape(1,2,4551), n_steps_out, n_features)
-#	print('X=%s y=%s, yhat=%s, index=%s' % (one_hot_decode(X1[i]), one_hot_decode(y[i]), one_hot_decode(target),i))
+	target = predict_sequence(infenc, infdec, X1[i].reshape(1,2,4551), n_steps_out, n_features)
+	print('X=%s y=%s, yhat=%s, index=%s' % (one_hot_decode(X1[i]), one_hot_decode(y[i]), one_hot_decode(target),i))
 
 
 
