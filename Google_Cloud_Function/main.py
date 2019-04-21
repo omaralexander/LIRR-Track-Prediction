@@ -13,13 +13,13 @@ def hello_remote_config(request):
 	test 	  	= requests.get("https://collector-otp-prod.camsys-apps.com/realtime/serviceStatus?apikey=API_KEY")
 	parsed 	  	= json.loads(test.content)
 	scope 		= ['https://spreadsheets.google.com/feeds','https://www.googleapis.com/auth/drive']
-	credentials = ServiceAccountCredentials.from_json_keyfile_name('client_secret.json',scope)
-	gc 			= gspread.authorize(credentials)
+	credentials 	= ServiceAccountCredentials.from_json_keyfile_name('client_secret.json',scope)
+	gc 		= gspread.authorize(credentials)
 	worksheet 	= gc.open("MTA_DELAY_DATA_DUMP").sheet1
-	tz 			= timezone('America/New_York')
+	tz 		= timezone('America/New_York')
 
 	'Sometimes duplicates appear. This is to make sure we dont add more than we need'				
-	already_seen = {}
+	already_seen 	 = {}
 	converter 	 = {
 					"2":0.0,"3":0.1,"1":0.2,"S":0.3,"W":0.4,"SIR":0.5,
 					"Z":0.6,"N":0.7,"L":0.8,"M":0.9,"R":0.10,"Q":0.11,
