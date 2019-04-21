@@ -10,7 +10,7 @@ import urllib2
 TIME_TO_RUN = 5 #run every 5 min
 DAYS_TO_RUN = 1
 ALLOWABLE   = {}
-URL 		= "https://us-central1-lirr-scraping.cloudfunctions.net/mta_delay_grabber"
+URL 	    = "https://us-central1-lirr-scraping.cloudfunctions.net/mta_delay_grabber"
 TOTAL_RUNS  = (60*(DAYS_TO_RUN * 24))//TIME_TO_RUN
 already_run = False
 
